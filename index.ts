@@ -2,12 +2,15 @@ interface smartphone {
     credito: number;
     numeroChiamate: number;
     costoMinuto: number
+    registroChiamate: Array<{id:number, durata:number, data:string, ora:string}>;
 
-    ricarica(euro: number): void;
-    numero404(): string
-    getNumeroChiamate(): number
+    ricarica(euro:number):void
+    numero404():string
+    getNumeroChiamate():number
     chiamata(min:number):void
-    azzeraChiamate(): void;
+    azzeraChiamate():void
+
+
 }
 
 
@@ -22,12 +25,14 @@ class Telefono implements smartphone {
         this.costoMinuto = 0.20
     }
 
+    public registroChiamate: { id: number; durata: number; data: string; ora: string; }[] = [] 
+
     public ricarica(euro: number): void {
         this.credito += euro
     }
 
     public numero404(): string {
-        return (Math.round(this.credito * 100) /100).toFixed(0)
+        return (Math.round(this.credito * 100) /100).toFixed(2)
     }
 
     public getNumeroChiamate() {
@@ -38,15 +43,13 @@ class Telefono implements smartphone {
         // effettua una chiamata virtualmente
         let costoChiamata: number = min * this.costoMinuto
 
-
         if (this.credito >= costoChiamata) {
             this.credito -= costoChiamata
             this.numeroChiamate++
+
         } else {
             console.log('Credito insufficiente per effettuare la chiamata')
         }
-
-        numero404()
     }
 
     public azzeraChiamate(): void {
@@ -56,16 +59,38 @@ class Telefono implements smartphone {
 }
 
 function printData(utente: Telefono): void {
-    console.log("Credito di partenza:", utente.credito);
-    console.log(`Utente effettua n. chiamate: ${utente.getNumeroChiamate()}`);
     console.log(`Credito residuo è: ${utente.numero404()} €`);
-    utente.azzeraChiamate();
-    console.log(`Credito residuo dopo azzeraChiamate: ${utente.numero404()} €`);
+    console.log(`L'utente ha effettuato ${utente.getNumeroChiamate()} chiamate`);
+    utente.azzeraChiamate()
+    console.log(`Chiamate azzerate, n. chiamate: ${utente.numeroChiamate}`);
+    console.log(`Registro chiamate: ${utente.registroChiamate}`);
   }
   
-  let utente1 = new Telefono(10, 2); // (credito di partenza, numero di chiamate)
+  let utente1 = new Telefono(10, 0); // (credito di partenza, numero di chiamate)
   console.log('---Utente 1---');
+  utente1.chiamata(2) // effettuo una chiamata virtuale da 2 minuti
+  utente1.chiamata(20) // effettuo una chiamata virtuale da 2 minuti
+  utente1.chiamata(20) // effettuo una chiamata virtuale da 2 minuti
   printData(utente1);
+
+  let utente2 = new Telefono(5, 0); // (credito di partenza, numero di chiamate)
+  console.log('---Utente 2---');
+  utente2.ricarica(10) // effettua una ricarica di 20
+  utente2.chiamata(2) // effettuo una chiamata virtuale da 2 minuti
+  utente2.chiamata(20) // effettuo una chiamata virtuale da 20 minuti
+  utente2.chiamata(10) // effettuo una chiamata virtuale da 10 minuti
+  utente2.chiamata(10) // effettuo una chiamata virtuale da 10 minuti
+  printData(utente2);
+
+  let utente3 = new Telefono(5, 0); // (credito di partenza, numero di chiamate)
+  console.log('---Utente 3---');
+  utente3.chiamata(2) // effettuo una chiamata virtuale da 2 minuti
+  utente3.ricarica(5) // effettua una ricarica di 20
+  utente3.chiamata(20) // effettuo una chiamata virtuale da 20 minuti
+  utente3.ricarica(5) // effettua una ricarica di 20
+  utente3.chiamata(30) // effettuo una chiamata virtuale da 10 minuti
+  utente3.chiamata(10) // effettuo una chiamata virtuale da 10 minuti
+  printData(utente3);
   
 
 
