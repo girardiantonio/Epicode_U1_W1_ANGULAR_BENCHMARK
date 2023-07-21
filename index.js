@@ -53,14 +53,15 @@ function printData(utente) {
     console.log(`L'utente ha effettuato ${utente.getNumeroChiamate()} chiamate`);
     utente.azzeraChiamate();
     console.log(`Chiamate azzerate, n. chiamate: ${utente.numeroChiamate}`);
-    console.log(`Registro chiamate: ${utente.registroChiamate}`);
 }
 let utente1 = new Telefono(10, 0); // (credito di partenza, numero di chiamate)
 console.log('---Utente 1---');
 utente1.chiamata(2); // effettuo una chiamata virtuale da 2 minuti
+utente1.info(12, `3347375345`);
 utente1.chiamata(20); // effettuo una chiamata virtuale da 20 minuti
 utente1.chiamata(20); // effettuo una chiamata virtuale da 20 minuti
-utente1.info(2, `5687568265826`);
+utente1.info(62, `3337975342`);
+utente1.info(5, `082456334`);
 utente1.printInfo();
 printData(utente1);
 let utente2 = new Telefono(5, 0); // (credito di partenza, numero di chiamate)
